@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hejie.springbootpractice.mapper.StaffInfoMapper">
+    <select id="selAll" resultType="StaffInfoEntity">
+        select staff_no, name, ac_no, ac_name, ac_br_name from staff_info
+    </select>
+</mapper>

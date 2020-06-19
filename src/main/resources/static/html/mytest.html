@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>hello</title>
+    <script src="../js/vueTest.js"></script>
+    <style>
+        .class1{
+           color: orange;
+        }
+    </style>
+</head>
+<body>
+    <div id="divVue">
+        <h4>site: {{site}}</h4>
+        <h4>url: {{url}}</h4>
+        <h4>alexa: {{alexa}}</h4>
+        <h4>{{details()}}</h4>
+        <div v-html = "site"></div>
+        <div v-bind:class="{'class1': use}">
+            v-bind:class 指令
+        </div>
+    </div>
+    <script type="text/javascript">
+        var data = {
+            site: "mySite",
+            url: "www.hejie.com",
+            alexa: "No1",
+            use: true
+        };
+        var vue = new Vue({
+            el: "#divVue",
+            data: data,
+            methods: {
+                details: function() {
+                    return this.site + " - biubiubiu";
+                }
+            }
+        });
+        console.log(vue.$data);
+        console.log(vue.$el);
+    </script>
+</body>
+</html>

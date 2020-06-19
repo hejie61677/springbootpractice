@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>vueTest</title>
+    <script src="../js/vueTest.js"></script>
+    <script src='./webjars/jquery/3.4.1/jquery.min.js'></script>
+</head>
+<body>
+    <div id="app">
+        test1----------------
+        <p>{{message | capitalize}}</p>
+        <label>
+            <input type="text" v-model="message"/>
+            <input type="button" v-on:click="reverseMessage" value="反转"/>
+        </label>
+        <h5 v-show="isOk">hello!</h5>
+        <br><br><br>test2----------------<br>
+        <ul>
+            <template v-for="site in sites">
+                <li>{{site.name}}</li>
+                <li>~~~~~~~~~~~~</li>
+            </template>
+        </ul>
+        <ol>
+            <li v-for="n in 3">
+                {{n}}
+            </li>
+        </ol>
+        <br>test3----------------<br><br>
+        <label>
+            原始值：<input type="text" v-model="srcText"/><br>
+            计算后的值：{{calText}}
+        </label>
+        <br><br><br>test4----------------<br><br>
+        <i>计数器：{{counter}}</i>
+        <button style="font-style: italic" @click="counter++">点我试试</button>
+        <br><br>
+        <label>
+            <input type="text" v-model="hour"/>时
+            <input type="text" v-model="minute"/>分
+            <input type="text" v-model="second"/>秒
+        </label>
+        <br><br><br>test5----------------<br><br>
+        <label>
+            <input type="button" autofocus="autofocus" @keyup.alt.enter="submit" value="提交"/>
+        </label>
+        <div @click.ctrl="submit">按住ctrl点我</div>
+        <br><br>test6----------------<br><br>
+        <p>单个复选框</p>
+        <label>
+            <input type="checkbox" v-model="checked"/>
+            {{checked}}
+        </label>
+        <p>多个复选框</p>
+        <label>
+            <input type="checkbox" value="Baidu" v-model="checkedNames"/>Baidu
+            <input type="checkbox" value="Taobao" v-model="checkedNames"/>Taobao
+            <input type="checkbox" value="Google" v-model="checkedNames"/>Google
+        </label>
+        <br><span>已选择：{{checkedNames}}</span>
+        <p>单选</p>
+        <label>
+            <input type="radio" value="Baidu" v-model="picked"/>Baidu
+            <input type="radio" value="Taobao" v-model="picked"/>Taobao
+            <input type="radio" value="Google" v-model="picked"/>Google
+        </label>
+        <br><span>已选择：{{picked}}</span>
+        <p>选择</p>
+        <select v-model="selected">
+            <option value="">请选择</option>
+            <option value="www.baidu.com">Baidu</option>
+            <option value="www.google.com">Google</option>
+        </select>
+        <br>选择的是：{{selected}}
+        <br><br><br>test7----------------<br><br>
+        <label>
+            <input v-model.lazy="message"/>
+            <input v-model.number="changeType"/>
+            <input v-model.trim="trimText"/>
+        </label>
+        <br><i>{{message}}</i>
+        <br><i>{{changeType + 1000}}</i>
+        <br><i>二哈{{trimText}}污污污</i>
+        <br><br><br>test8----------------<br><br>
+        <mycomponent></mycomponent>
+    </div>
+    <script>
+        //实例化vue对象
+        var vue = new Vue({
+            el: "#app",
+            data: {
+                message: "myVueTestOne",
+                isOk: false,
+                sites: [
+                    {name: "aaa"},
+                    {name: "bbb"},
+                    {name: "ccc"}
+                ],
+                srcText: "myVueAbc",
+                counter: 1,
+                hour: 0,
+                minute: 0,
+                second: 0,
+                checked: false,
+                checkedNames: [],
+                picked: "Google",
+                selected: "",
+                changeType: "11.2",
+                trimText: "   abc   "
+            },
+            methods: {
+                reverseMessage: function () {
+                    this.message = this.message.split("").reverse().join("");
+                },
+                submit: function () {
+                    alert("提交成功");
+                }
+            },
+            filters: {
+                capitalize: function (value) {
+                    if (!value) {
+                        return "";
+                    } else {
+                        return value.toString().charAt(0).toUpperCase() + value.toString().slice(1);
+                    }
+                }
+            },
+            computed: {
+                calText: function () {
+                    return this.srcText.toUpperCase().concat("滴滴滴");
+                },
+                calText1: {
+                    get: function () {
+                        return this.srcText.concat("getBility");
+                    },
+                    set: function (newText) {
+                        this.srcText = newText;
+                    }
+                }
+            },
+            watch: {
+                hour: function (val) {
+                    this.hour = val;
+                    this.minute = this.hour * 60;
+                    this.second = this.minute * 60;
+                },
+                minute: function (val) {
+                    this.hour = val / 60;
+                    this.minute = val;
+                    this.second = this.minute * 60;
+                },
+                second: function (val) {
+                    this.hour = val / 3600;
+                    this.minute = this.hour * 60;
+                    this.second = val;
+                }
+            }
+        });
+        vue.calText1 = "this is a new Text";
+        console.log("newText: " + vue.srcText);
+        vue.$watch("counter", function (newVal, oldVal) {
+            console.log("计数器由: <" + oldVal + ">变为<" + newVal + ">");
+        });
+        vue.$watch("hour", function (newVal, oldVal) {
+            console.log("小时由: <" + oldVal + ">变为<" + newVal + ">");
+        });
+        vue.$watch("minute", function (newVal, oldVal) {
+            console.log("分钟由: <" + oldVal + ">变为<" + newVal + ">");
+        });
+        vue.$watch("second", function (newVal, oldVal) {
+            console.log("秒由: <" + oldVal + ">变为<" + newVal + ">");
+        });
+    </script>
+</body>
+</html>
